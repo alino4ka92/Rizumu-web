@@ -26,6 +26,10 @@ def logout():
     logout_user()
     return redirect("/")
 
+@app.route('/test_visual')
+def test_visual():
+    return render_template('base.html', title="1")
+
 
 def main():
     db_session.global_init("db/rizumu.db")

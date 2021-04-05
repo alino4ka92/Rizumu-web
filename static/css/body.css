@@ -1,0 +1,39 @@
+.navbar {
+    background-image: url(/static/img/backline1.png);
+}
+
+body {
+    background-image: url(/static/img/background.png);
+}
+
+.alter-button {
+    height:60px;
+    width:150px;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    outline:none;
+    color: #ffffff;
+    font-size: 36px;
+    font-family: Ubuntu, sans-serif;
+}
+
+.logo-button {
+    background-image: url(/static/img/rizumu.png);
+}
+
+.maps-button {
+    position: absolute;
+    right: 880pt;
+}
+
+
+.friend-button {
+    position: absolute;
+    right: 768pt;
+}
+
+.profile-button {
+    position: absolute;
+    right: 645pt;
+}
