@@ -19,16 +19,18 @@
         <a class="friend-button alter-button" href="/index">Друзья</a>
         <a class="profile-button alter-button" href="/index">Профиль</a>
         {% if current_user.is_authenticated %}
-            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
         {% else %}
         <p>
-            <a class="login-btn btn btn-primary" href="/register" style="margin-top: 15px; margin-left: 15px">Зарегистрироваться</a>
-            <a class="btn btn-success login-btn" href="/login" style="margin-top: 15px; margin-left: 15px">Войти</a>
+            <a class="btn btn-primary register-btn" href="/register"
+               style="margin-top: 15px; margin-left: 15px; background-color: #ff94e1; border-color: #ff94e1;">Зарегистрироваться</a>
+            <a class="btn btn-success login-btn" href="/login"
+               style="margin-top: 15px; margin-left: 15px; background-color: #a269ff; border-color: #a269ff;">Войти</a>
         </p>
         {% endif %}
     </nav>
 </header>
-<main role="main" class="container">
+<main role="main" class="container" style="padding: 30pt 90pt 0pt; margin:0" >
     {% block content %}{% endblock %}
 </main>
 </body>

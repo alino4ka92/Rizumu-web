@@ -3,6 +3,8 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
     background-image: url(/static/img/background.png);
 }
 @font-face {
@@ -10,6 +12,7 @@ body {
     src: url(/static/fonts/rizumu.ttf);
 }
 .alter-button {
+    text-shadow: 0px 0px 10px white;
     height:60px;
     width:150px;
     background-color: transparent;
@@ -24,35 +27,44 @@ body {
     text-decoration: none;
     color: #ffffff;
 }
-
+.register-btn{
+    font-family: CorpRound;
+    position: absolute;
+    top: 2pt;
+    right: 50pt;
+}
 .login-btn {
     font-family: CorpRound;
+    position: absolute;
+    top: 2pt;
+    right: 210pt;
 }
 .logo-button {
     background-image: url(/static/img/rizumu.png);
 }
-
 .maps-button {
     position: absolute;
-    right: 1080pt;
+    right: 1130pt;
 
 }
 .friend-button {
     position: absolute;
-    right: 968pt;
+    right: 1018pt;
 }
 
 .profile-button {
     position: absolute;
-    right: 845pt;
+    right: 895pt;
 }
 
 h1 {
     padding: 30px 0px 10px 0px;
+    text-shadow: 0px 0px 10px white;
     color: #ffffff;
     font-family: CorpRound;
 }
 
 p {
+    text-shadow: 0px 0px 4px white;
     font-family: CorpRound;
 }
