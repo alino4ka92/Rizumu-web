@@ -5,7 +5,10 @@
 body {
     background-image: url(/static/img/background.png);
 }
-
+@font-face {
+    font-family: CorpRound;
+    src: url(/static/fonts/rizumu.ttf);
+}
 .alter-button {
     height:60px;
     width:150px;
@@ -15,25 +18,41 @@ body {
     outline:none;
     color: #ffffff;
     font-size: 36px;
-    font-family: Ubuntu, sans-serif;
+    font-family: CorpRound;
+}
+.alter-button:hover {
+    text-decoration: none;
+    color: #ffffff;
 }
 
+.login-btn {
+    font-family: CorpRound;
+}
 .logo-button {
     background-image: url(/static/img/rizumu.png);
 }
 
 .maps-button {
     position: absolute;
-    right: 880pt;
+    right: 1080pt;
+
 }
-
-
 .friend-button {
     position: absolute;
-    right: 768pt;
+    right: 968pt;
 }
 
 .profile-button {
     position: absolute;
-    right: 645pt;
+    right: 845pt;
+}
+
+h1 {
+    padding: 30px 0px 10px 0px;
+    color: #ffffff;
+    font-family: CorpRound;
+}
+
+p {
+    font-family: CorpRound;
 }

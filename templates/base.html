@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/static/css/body.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/body.css">
     <link rel="stylesheet" type="text/css"
           href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
     <link rel="stylesheet"
@@ -14,10 +14,18 @@
 <body>
 <header>
     <nav class="navbar">
-        <button class="logo-button alter-button"></button>
-        <button class="maps-button alter-button">Карты</button>
-        <button class="friend-button alter-button">Друзья</button>
-        <button class="profile-button alter-button">Профиль</button>
+        <a class="logo-button alter-button" href="/index"></a>
+        <a class="maps-button alter-button" href="/index">Карты</a>
+        <a class="friend-button alter-button" href="/index">Друзья</a>
+        <a class="profile-button alter-button" href="/index">Профиль</a>
+        {% if current_user.is_authenticated %}
+            <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        {% else %}
+        <p>
+            <a class="login-btn btn btn-primary" href="/register" style="margin-top: 15px; margin-left: 15px">Зарегистрироваться</a>
+            <a class="btn btn-success login-btn" href="/login" style="margin-top: 15px; margin-left: 15px">Войти</a>
+        </p>
+        {% endif %}
     </nav>
 </header>
 <main role="main" class="container">
