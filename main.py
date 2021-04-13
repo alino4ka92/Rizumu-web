@@ -3,16 +3,24 @@ from data.user import User
 from data import db_session
 from flask import Flask, url_for, render_template, request, redirect, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, login_required, logout_user, login_user
+from flask_login import LoginManager, login_required, logout_user, login_user, current_user
 import flask
 from flask import make_response, request
 from flask_restful import reqparse, abort, Api, Resource
 from forms.user import RegisterForm, LoginForm
-
+from requests import get, post, delete
+from data.user_resources import UserResource, UserListResource
 app = Flask(__name__)
+blueprint = flask.Blueprint(
+    'news_api',
+    __name__,
+    template_folder='templates'
+)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
+api = Api(app)
+
 
 
 @login_manager.user_loader
@@ -77,9 +85,37 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+@blueprint.route('/api/change_avatar/<int:user_id>')
+def change_avatar(user_id):
+    if current_user['id'] != user_id:
+        return render_template('404.html', message='Пользователь не залогинен')
+
+
+@app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
+def profile(user_id):
+    if request.method == 'GET':
+        ans = get(f"http://127.0.0.1:8080/api/user/{user_id}").json()
+        try:
+            user = ans['user']
+        except Exception:
+            return render_template("404.html", message=ans['message'])
+        return render_template("profile.html", user=user)
+    elif request.method == 'POST':
+        f = request.files['file']
+        f.save(f'static/img/avatars/{user_id}.png')
+        sess = db_session.create_session()
+        user = sess.query(User).filter(User.id==user_id).all()[0]
+        user.avatar = f'{user_id}.png'
+        sess.commit()
+        print(user)
+        return redirect(f'/profile/{user_id}')
 
 def main():
+
     db_session.global_init("db/rizumu.db")
+    app.register_blueprint(blueprint)
+    api.add_resource(UserResource, '/api/user/<int:user_id>')
+    api.add_resource(UserListResource, '/api/user')
     app.run(host='127.0.0.1', port=8080)
 
 

@@ -17,9 +17,9 @@
         <a class="logo-button alter-button" href="/index"></a>
         <a class="maps-button alter-button" href="/index">Карты</a>
         <a class="friend-button alter-button" href="/index">Друзья</a>
-        <a class="profile-button alter-button" href="/index">Профиль</a>
+        <a class="profile-button alter-button" href="/profile/{{current_user.id}}">Профиль</a>
         {% if current_user.is_authenticated %}
-        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
+        <a class="navbar-brand username-button" href="/profile/{{current_user.id}}">{{ current_user.name }}</a>
         {% else %}
         <p>
             <a class="btn btn-primary register-btn" href="/register"

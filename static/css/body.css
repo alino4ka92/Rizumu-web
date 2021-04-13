@@ -27,6 +27,21 @@ body {
     text-decoration: none;
     color: #ffffff;
 }
+
+.username-button {
+    text-shadow: 0px 0px 10px white;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    outline:none;
+    color: #ffffff;
+    font-size: 36px;
+    font-family: CorpRound;
+}
+.username-button:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
 .register-btn{
     font-family: CorpRound;
     position: absolute;
@@ -38,6 +53,11 @@ body {
     position: absolute;
     top: 2pt;
     right: 210pt;
+}
+
+.default-button {
+    font-family: CorpRound;
+
 }
 .logo-button {
     background-image: url(/static/img/rizumu.png);
@@ -64,7 +84,32 @@ h1 {
     font-family: CorpRound;
 }
 
+h2 {
+    padding: 30px 0px 10px 0px;
+    text-shadow: 0px 0px 10px white;
+    color: #ffffff;
+    font-family: CorpRound;
+}
+h3 {
+    padding: 30px 0px 10px 0px;
+    text-shadow: 0px 0px 10px white;
+    color: #ffffff;
+    font-family: CorpRound;
+}
+h4 {
+    padding: 30px 0px 10px 0px;
+    text-shadow: 0px 0px 10px white;
+    color: #ffffff;
+    font-family: CorpRound;
+}
+h5 {
+    padding: 30px 0px 10px 0px;
+    text-shadow: 0px 0px 10px white;
+    color: #ffffff;
+    font-family: CorpRound;
+}
 p {
-    text-shadow: 0px 0px 4px white;
+    text-shadow: 0px 0px 10px white;
+    color: #ffffff;
     font-family: CorpRound;
 }

@@ -13,7 +13,8 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     name = sqlalchemy.Column(sqlalchemy.String)
     email = sqlalchemy.Column(sqlalchemy.String)
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
-    created_date = sqlalchemy.Column(sqlalchemy.DateTime)
+    avatar = sqlalchemy.Column(sqlalchemy.String, default="default.png")
+    created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

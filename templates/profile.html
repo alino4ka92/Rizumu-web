@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        <h1> {{user.name}} </h1>
+        <img src="/static/img/avatars/{{user.avatar}}" style="width:300px;">
+        {% if current_user.is_authenticated %}
+            {% if current_user.id == user.id %}
+                <form method="post" enctype="multipart/form-data">
+                   <div class="form-group" style="padding: 30px 10px 0px 0px">
+                        <p> Загрузите новую аватарку</p>
+                        <input type="file" class="form-control-file" id="photo" name="file" style="color:#fff;
+                        text-shadow: 0px 0px 10px white;color: #ffffff; font-family: CorpRound;">
+                    </div>
+                    <button type="submit" class="btn btn-primary default-button" style="background-color: #ff94e1; border-color: #ff94e1;">Загрузить аватарку</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+
+
+{% endblock %}
