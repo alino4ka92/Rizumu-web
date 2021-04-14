@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div>
+    <div style="width:45%; float:left">
         <h1> {{user.name}} </h1>
         <img src="/static/img/avatars/{{user.avatar}}" style="width:300px;">
         {% if current_user.is_authenticated %}
@@ -16,6 +16,20 @@
                 </form>
             {% endif %}
         {% endif %}
+    </div>
+    <div style="width:55%; float:left">
+        <h1>Последние игры</h1>
+        {% for play in plays %}
+            <div>
+                <h3 style="padding: 10px 0px 0px 0px">
+
+                    {{play.beatmap.artist}} - {{play.beatmap.name}} [{{play.beatmap.version}}]
+                </h3>
+                <h3 style="color:{{marks_colors[play.mark]}}; padding:0;text-shadow: 0px 0px 10px {{marks_colors[play.mark]}};"> {{play.mark}}</h3>
+                <p style="color: #ffe5f7; padding:0">Счет: {{play.score}} <br> Точность: {{play.accuracy}} <br> Сыграна {{play.date.strftime('%Y.%m.%d %H:%M')}} </p>
+            </div>
+
+        {% endfor %}
     </div>
 
 

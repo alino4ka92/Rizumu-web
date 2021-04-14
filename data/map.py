@@ -20,7 +20,7 @@ class Map(SqlAlchemyBase, UserMixin, SerializerMixin):
     image = sqlalchemy.Column(sqlalchemy.String, default="default.png")
     music = sqlalchemy.Column(sqlalchemy.String, default="default.mp3")
     added_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
-
+    plays = orm.relation("Play", back_populates='beatmap')
 
 def read_maps():
     songs = os.listdir(path="static/maps")

@@ -64,17 +64,17 @@ body {
 }
 .maps-button {
     position: absolute;
-    right: 930pt;
+    right: 58%;
 
 }
 .friend-button {
     position: absolute;
-    right: 718pt;
+    right: 50%;
 }
 
 .profile-button {
     position: absolute;
-    right: 595pt;
+    right: 42%;
 }
 
 h1 {
