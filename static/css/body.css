@@ -19,7 +19,7 @@ body {
     border: 0;
     padding: 0;
     outline:none;
-    color: #ffffff;
+    color: #f0f0f0;
     font-size: 36px;
     font-family: CorpRound;
 }
@@ -64,17 +64,17 @@ body {
 }
 .maps-button {
     position: absolute;
-    right: 1130pt;
+    right: 930pt;
 
 }
 .friend-button {
     position: absolute;
-    right: 1018pt;
+    right: 718pt;
 }
 
 .profile-button {
     position: absolute;
-    right: 895pt;
+    right: 595pt;
 }
 
 h1 {
@@ -112,4 +112,24 @@ p {
     text-shadow: 0px 0px 10px white;
     color: #ffffff;
     font-family: CorpRound;
+}
+
+.menu-maps {
+    background: #5d118f;
+    margin-left: 200px;
+    font-size: 123%;
+    padding: 22px;
+}
+
+.redirect-map{
+    float: right;
+    align: center;
+    font-family: CorpRound;
+    text-shadow: 0px 0px 10px white;
+    height: 60px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: #aaa0ff;
+    color: #ffffff;
+    font-size: 123%;
 }

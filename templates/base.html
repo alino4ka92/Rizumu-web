@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/icon.ico">
     <link rel="stylesheet" type="text/css" href="/static/css/body.css">
     <link rel="stylesheet" type="text/css"
           href="http://fonts.googleapis.com/css?family=Ubuntu:regular,bold&subset=Latin">
@@ -15,7 +16,7 @@
 <header>
     <nav class="navbar">
         <a class="logo-button alter-button" href="/index"></a>
-        <a class="maps-button alter-button" href="/index">Карты</a>
+        <a class="maps-button alter-button" href="/maps/">Карты</a>
         <a class="friend-button alter-button" href="/index">Друзья</a>
         <a class="profile-button alter-button" href="/profile/{{current_user.id}}">Профиль</a>
         {% if current_user.is_authenticated %}

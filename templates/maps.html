@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div>
+        {% for map in maps %}
+            <p><img src="/{{map.image}}" align="left" width="200" height="160"></p>
+            <button class="redirect-map">Посмотреть</button>
+            <p class="menu-maps">{{ map.name }}<br>
+            Исполнитель - {{ map.creator}}<br>
+            Автор карты - {{ map.artist }}<br>
+            Сложность - {{ map.version }}</p>
+
+        {% endfor %}
+    </div>
+{% endblock %}

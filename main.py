@@ -1,5 +1,6 @@
 from flask import Flask
 from data.user import User
+from data.map import Map, read_maps
 from data import db_session
 from flask import Flask, url_for, render_template, request, redirect, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -109,6 +110,18 @@ def profile(user_id):
         sess.commit()
         print(user)
         return redirect(f'/profile/{user_id}')
+
+@app.route('/maps/')
+def maps():
+    read_maps()
+    map = []
+    sess = db_session.create_session()
+    for mp in sess.query(Map).all():
+        map.append(mp)
+        print(mp)
+        print(mp.artist)
+    return render_template("maps.html", maps=map, title="Карты")
+
 
 def main():
 
