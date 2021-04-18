@@ -1,6 +1,7 @@
 from flask import Flask
 from data.user import User
 from data.map import Map, read_maps
+import os
 from data.play import Play
 from data import db_session
 from flask import Flask, url_for, render_template, request, redirect, jsonify
@@ -146,7 +147,9 @@ def main():
     api.add_resource(UserListResource, '/api/user')
 
     read_maps()
-    app.run(host='127.0.0.1', port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host='0.0.0.0', port=port)
+
 
 
 
