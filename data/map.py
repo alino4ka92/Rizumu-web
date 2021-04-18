@@ -33,7 +33,7 @@ def read_maps():
         file_names = os.listdir(path=f'static/maps/{song}')
         diffs = [diff for diff in file_names if diff.endswith('.osu')]
         for diff in diffs:
-            file = open(f'static\\maps\\{song}\\{diff}', encoding="utf-8").read().split(
+            file = open(f'static/maps/{song}/{diff}', encoding="utf-8").read().split(
                 '\n')
             dir = song
             general_line = file.index('[General]')
