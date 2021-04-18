@@ -125,14 +125,29 @@ def maps():
 
     return render_template("maps.html", maps=map, title="Карты")
 
-
+@app.route('/maps/<int:map_id>')
+def map(map_id):
+    sess = db_session.create_session()
+    ans = sess.query(Map).filter(Map.id==map_id)
+    if not ans:
+        return render_template("404.html", message='Ничего не найдено')
+    map = ans[0]
+    plays = map.plays
+    if len(plays)>50:
+        plays = plays[:50]
+    plays.sort(key=lambda x: x.score)
+    marks_colors = {'S': "ffeec2", "SS": "ffeec2", "A": "c8ffbf", "B": "a8c5ff", "C": "efb0ff", "D": "ffb0b0"}
+    return render_template("map.html", map=map, plays=plays, marks_colors=marks_colors)
 def main():
+
     db_session.global_init("db/rizumu.db")
     app.register_blueprint(blueprint)
     api.add_resource(UserResource, '/api/user/<int:user_id>')
     api.add_resource(UserListResource, '/api/user')
 
+    read_maps()
     app.run(host='127.0.0.1', port=8080)
+
 
 
 if __name__ == '__main__':
