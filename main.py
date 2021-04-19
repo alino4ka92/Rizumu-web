@@ -70,7 +70,7 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        return redirect('/login')
+        return redirect("/login")
     return render_template('register.html', title='Регистрация', form=form)
 
 
@@ -126,6 +126,22 @@ def maps():
 
     return render_template("maps.html", maps=map, title="Карты")
 
+@app.route('/users', methods=['GET', 'POST'])
+def get_users():
+    if request.method == 'GET':
+        sess = db_session.create_session()
+        #users = sess.query(User).filter(User.name.like(f'%{query}%'))
+        return render_template('users.html')
+    elif request.method == 'POST':
+        query = request.form['name']
+        sess = db_session.create_session()
+        users = sess.query(User).filter(User.name.like(f'%{query}%')).all()
+        message = ''
+        if len(users) == 0:
+            message = 'По вашему запросу ничего не найдено...'
+        else:
+            message = f"Найдено {len(users)} пользователей: "
+        return render_template('users.html', users=users, message=message)
 @app.route('/maps/<int:map_id>')
 def map(map_id):
     sess = db_session.create_session()

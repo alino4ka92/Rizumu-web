@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Поиск пользователей</h1>
+<div style="width:600px; ">
+    <form method="post" style="max-width:600px;">
+        <p style="font-size:15pt; padding:0; margin:0" for="name">Введите имя...</p><br>
+        <input type="text" id="name" name="name" style="width:600px; padding:0; margin-bottom:15pt">
+        <button type="submit" class="btn btn-primary alter-button"
+                style="margin-top:10px;background-color: #ff94e1; border-color: #ff94e1;">Поиск
+        </button>
+    </form>
+</div>
+<div>
+    <h3>{{message}}</h3>
+    {% for user in users %}
+
+
+        <img src="/static/img/avatars/{{user.avatar}}" style="width:50px;" >
+        <a href="/profile/{{user.id}}" class="alter-button" style="margin-left:10pt">{{user.name}}</a>
+        <br>
+    {% endfor %}
+</div>
+{% endblock %}
