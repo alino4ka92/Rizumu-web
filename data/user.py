@@ -19,7 +19,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
     plays = orm.relation("Play", back_populates="user")
     friends = sqlalchemy.Column(sqlalchemy.String, default="")
-
+    secret_key = sqlalchemy.Column(sqlalchemy.String, default="-")
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
 
