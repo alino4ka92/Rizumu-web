@@ -19,8 +19,8 @@ class Map(SqlAlchemyBase, UserMixin, SerializerMixin):
     version = sqlalchemy.Column(sqlalchemy.String)
     image = sqlalchemy.Column(sqlalchemy.String, default="default.png")
     music = sqlalchemy.Column(sqlalchemy.String, default="default.mp3")
+    beatmap_id = sqlalchemy.Column(sqlalchemy.String)
     added_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
-    filename=sqlalchemy.Column(sqlalchemy.String)
     plays = orm.relation("Play", back_populates='beatmap')
 
 def read_maps():
@@ -28,12 +28,10 @@ def read_maps():
     maps = []
     sess = db_session.create_session()
     for song in songs:
-        if song.endswith('.zip'):
-            continue
         file_names = os.listdir(path=f'static/maps/{song}')
         diffs = [diff for diff in file_names if diff.endswith('.osu')]
         for diff in diffs:
-            file = open(f'static/maps/{song}/{diff}', encoding="utf-8").read().split(
+            file = open(f'static\\maps\\{song}\\{diff}', encoding="utf-8").read().split(
                 '\n')
             dir = song
             general_line = file.index('[General]')
@@ -70,6 +68,7 @@ def read_maps():
             artist = metadata['Artist']
             creator = metadata['Creator']
             version = metadata['Version']
+            beatmap_id = metadata['BeatmapID']
             music = f"/static/maps/{dir}/{general['AudioFilename']}"
             mp = sess.query(Map).filter(Map.name == name, Map.artist == artist,
                                         Map.creator == creator, Map.version == version,
@@ -85,8 +84,8 @@ def read_maps():
                         background_file = background_file.rstrip('"').lstrip('"')
                         background = pygame.image.load(f'static/maps/{dir}/{background_file}')
                         path = f"static/img/maps/{background_file}.png"
-                        pygame.image.save(background, path)
+                        pygame.image.save(pygame.transform.smoothscale(background, (200, 160)), path)
                 map = Map(name=name, artist=artist, creator=creator, version=version, music=music,
-                          image=path,filename=f"/static/maps/{song}")
+                          image=path, beatmap_id=beatmap_id)
                 sess.add(map)
         sess.commit()

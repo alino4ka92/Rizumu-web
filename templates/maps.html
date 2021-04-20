@@ -3,18 +3,13 @@
 {% block content %}
     <div>
         {% for map in maps %}
-
             <p><img src="/{{map.image}}" align="left" width="200" height="160"></p>
-            <a class="btn btn-primary redirect-map" href="/maps/{{map.id}}"
-               style="background-color: #ff94e1; border-color: #ff94e1; text-shadow: 0px 0px 10px white; height: 40px;
-                width: 120px;">Посмотреть</a>
+            <button class="redirect-map">Посмотреть</button>
             <p class="menu-maps">{{ map.name }}<br>
-
             Исполнитель - {{ map.creator}}<br>
             Автор карты - {{ map.artist }}<br>
-            Сложность - {{ map.version }}
+            Сложность - {{ map.version }}</p>
 
-            </p>
         {% endfor %}
     </div>
 {% endblock %}

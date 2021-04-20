@@ -5,8 +5,6 @@ from sqlalchemy import orm
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
-
-
 class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
 
@@ -17,8 +15,8 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     hashed_password = sqlalchemy.Column(sqlalchemy.String)
     avatar = sqlalchemy.Column(sqlalchemy.String, default="default.png")
     created_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
+    secret_key = sqlalchemy.Column(sqlalchemy.String, default="-")
     plays = orm.relation("Play", back_populates="user")
-    friends = sqlalchemy.Column(sqlalchemy.String, default="")
 
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)

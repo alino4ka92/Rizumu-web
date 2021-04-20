@@ -2,6 +2,7 @@ from flask import Flask
 from data.user import User
 from data.map import Map, read_maps
 import os
+import random
 from data.play import Play
 from data import db_session
 from flask import Flask, url_for, render_template, request, redirect, jsonify
@@ -15,7 +16,7 @@ from requests import get, post, delete
 from data.user_resources import UserResource, UserListResource
 app = Flask(__name__)
 blueprint = flask.Blueprint(
-    'news_api',
+    'api',
     __name__,
     template_folder='templates'
 )
@@ -142,6 +143,7 @@ def get_users():
         else:
             message = f"Найдено {len(users)} пользователей: "
         return render_template('users.html', users=users, message=message)
+
 @app.route('/maps/<int:map_id>')
 def map(map_id):
     sess = db_session.create_session()
@@ -150,11 +152,65 @@ def map(map_id):
         return render_template("404.html", message='Ничего не найдено')
     map = ans[0]
     plays = map.plays
-    if len(plays)>50:
+    if len(plays) > 50:
         plays = plays[:50]
     plays.sort(key=lambda x: x.score)
     marks_colors = {'S': "ffeec2", "SS": "ffeec2", "A": "c8ffbf", "B": "a8c5ff", "C": "efb0ff", "D": "ffb0b0"}
     return render_template("map.html", map=map, plays=plays, marks_colors=marks_colors)
+
+@blueprint.route('/api/synchronization/<string:email>;<string:password>')
+def synchronization(email, password):
+    sess = db_session.create_session()
+    user = sess.query(User).filter(User.email == email).first()
+    if not user:
+        return jsonify({
+            'result': 0
+        })
+    if not user.check_password(password):
+        return jsonify({
+            'result': 0
+        })
+    while True:
+        key = generate_key()
+        if not sess.query(User).filter(User.secret_key == key).first():
+            break
+    user.secret_key = key
+    sess.commit()
+    records = sess.query(Play).filter(Play.user_id == user.id).all()
+    return jsonify({
+        'result': 1,
+        'records': [(i.beatmap_id, i.score, i.accuracy, i.combo, i.mark) for i in records],
+        'key': key,
+        'user_id': user.id
+    })
+
+
+@blueprint.route('/api/get_records/', methods=['POST'])
+def get_records():
+    if not request.json:
+        return jsonify({'error': 'Empty request'})
+    sess = db_session.create_session()
+    us_id = request.json['user_id']
+    user = sess.query(User).filter(User.id == us_id).first()
+    if user.secret_key == request.json['key']:
+        for pl in request.json['records']:
+            play = sess.query(Play).filter(Play.beatmap_id == pl[0], Play.user_id == us_id,
+                                           Play.score == pl[1], Play.accuracy == pl[2],
+                                           Play.combo == pl[3], Play.mark == pl[4]).first()
+            if not play:
+                pl = Play(beatmap_id=pl[0], user_id=us_id, score=pl[1], accuracy=pl[2],
+                      combo=pl[3], mark=pl[4])
+                sess.add(pl)
+        sess.commit()
+    return jsonify({'error': 'Incorrect key'})
+
+
+def generate_key():
+    chars = 'abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+    key = ''.join([random.choice(chars) for _ in range(30)])
+    return key
+
+
 def main():
 
     db_session.global_init("db/rizumu.db")
