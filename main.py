@@ -215,7 +215,6 @@ def main():
     app.register_blueprint(blueprint)
     api.add_resource(UserResource, '/api/user/<int:user_id>')
     api.add_resource(UserListResource, '/api/user')
-
     read_maps()
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port)
