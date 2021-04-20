@@ -5,7 +5,7 @@
         {% for map in maps %}
 
             <p><img src="/{{map.image}}" align="left" width="200" height="160"></p>
-            <a class="btn btn-primary redirect-map" href="/maps/{{map.id}}"
+            <a class="btn btn-primary redirect-map" href="/maps/{{map.beatmap_id}}"
                style="background-color: #ff94e1; border-color: #ff94e1; text-shadow: 0px 0px 10px white; height: 40px;
                 width: 120px;">Посмотреть</a>
             <p class="menu-maps">{{ map.name }}<br>

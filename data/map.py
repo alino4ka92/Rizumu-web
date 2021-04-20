@@ -20,6 +20,7 @@ class Map(SqlAlchemyBase, UserMixin, SerializerMixin):
     image = sqlalchemy.Column(sqlalchemy.String, default="default.png")
     music = sqlalchemy.Column(sqlalchemy.String, default="default.mp3")
     added_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
+    beatmap_id = sqlalchemy.Column(sqlalchemy.String)
     filename=sqlalchemy.Column(sqlalchemy.String)
     plays = orm.relation("Play", back_populates='beatmap')
 
@@ -70,6 +71,7 @@ def read_maps():
             artist = metadata['Artist']
             creator = metadata['Creator']
             version = metadata['Version']
+            beatmap_id = metadata['BeatmapID']
             music = f"/static/maps/{dir}/{general['AudioFilename']}"
             mp = sess.query(Map).filter(Map.name == name, Map.artist == artist,
                                         Map.creator == creator, Map.version == version,
@@ -87,6 +89,6 @@ def read_maps():
                         path = f"static/img/maps/{background_file}.png"
                         pygame.image.save(background, path)
                 map = Map(name=name, artist=artist, creator=creator, version=version, music=music,
-                          image=path,filename=f"/static/maps/{song}")
+                          image=path,filename=f"/static/maps/{song}", beatmap_id=beatmap_id)
                 sess.add(map)
         sess.commit()

@@ -12,7 +12,7 @@ class Play(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    beatmap_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('maps.id'))
+    beatmap_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('maps.beatmap_id'))
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'))
     score = sqlalchemy.Column(sqlalchemy.Integer)
     accuracy = sqlalchemy.Column(sqlalchemy.Float)
