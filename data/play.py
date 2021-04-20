@@ -16,6 +16,7 @@ class Play(SqlAlchemyBase):
     user_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('users.id'))
     score = sqlalchemy.Column(sqlalchemy.Integer)
     accuracy = sqlalchemy.Column(sqlalchemy.Float)
+    combo = sqlalchemy.Column(sqlalchemy.Integer)
     mark = sqlalchemy.Column(sqlalchemy.String)
     date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
     user = orm.relation('User')
