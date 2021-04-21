@@ -14,6 +14,7 @@ from forms.user import RegisterForm, LoginForm
 from requests import get, post, delete
 from data.user_resources import UserResource, UserListResource
 import random
+
 app = Flask(__name__)
 blueprint = flask.Blueprint(
     'news_api',
@@ -24,7 +25,6 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 api = Api(app)
-
 
 
 @login_manager.user_loader
@@ -89,6 +89,7 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @blueprint.route('/api/change_avatar/<int:user_id>')
 def change_avatar(user_id):
     if current_user['id'] != user_id:
@@ -99,23 +100,24 @@ def change_avatar(user_id):
 def profile(user_id):
     if request.method == 'GET':
         sess = db_session.create_session()
-        ans = sess.query(User).filter(User.id==user_id)
+        ans = sess.query(User).filter(User.id == user_id)
         if not ans:
             return render_template("404.html", message='Ничего не найдено')
         user = ans[0]
         plays = user.plays
-        plays.sort(key=lambda x:x.date)
-        marks_colors= {'S': "#ffeec2", "SS" :"ffeec2", "A": "c8ffbf", "B": "a8c5ff", "C": "efb0ff", "D":"ffb0b0"}
+        plays.sort(key=lambda x: x.date, reverse=True)
+        marks_colors = {'S': "#ffeec2", "SS": "#ffeec2", "A": "#c8ffbf", "B": "#a8c5ff", "C": "#efb0ff", "D": "#ffb0b0"}
         return render_template("profile.html", user=user, plays=plays, marks_colors=marks_colors)
     elif request.method == 'POST':
         f = request.files['file']
         f.save(f'static/img/avatars/{user_id}.png')
         sess = db_session.create_session()
-        user = sess.query(User).filter(User.id==user_id).all()[0]
+        user = sess.query(User).filter(User.id == user_id).all()[0]
         user.avatar = f'{user_id}.png'
         sess.commit()
         print(user)
         return redirect(f'/profile/{user_id}')
+
 
 @app.route('/maps/')
 def maps():
@@ -127,11 +129,12 @@ def maps():
 
     return render_template("maps.html", maps=map, title="Карты")
 
+
 @app.route('/users', methods=['GET', 'POST'])
 def get_users():
     if request.method == 'GET':
         sess = db_session.create_session()
-        #users = sess.query(User).filter(User.name.like(f'%{query}%'))
+        # users = sess.query(User).filter(User.name.like(f'%{query}%'))
         return render_template('users.html')
     elif request.method == 'POST':
         query = request.form['name']
@@ -143,19 +146,23 @@ def get_users():
         else:
             message = f"Найдено {len(users)} пользователей: "
         return render_template('users.html', users=users, message=message)
+
+
 @app.route('/maps/<int:map_id>')
 def map(map_id):
     sess = db_session.create_session()
-    ans = sess.query(Map).filter(Map.beatmap_id==map_id)
+    ans = sess.query(Map).filter(Map.beatmap_id == map_id)
     if not ans:
         return render_template("404.html", message='Ничего не найдено')
     map = ans[0]
     plays = map.plays
-    if len(plays)>50:
+
+    plays.sort(key=lambda x: x.score, reverse=True)
+    if len(plays) > 50:
         plays = plays[:50]
-    plays.sort(key=lambda x: x.score)
     marks_colors = {'S': "ffeec2", "SS": "ffeec2", "A": "c8ffbf", "B": "a8c5ff", "C": "efb0ff", "D": "ffb0b0"}
     return render_template("map.html", map=map, plays=plays, marks_colors=marks_colors)
+
 
 @blueprint.route('/api/synchronization/<string:email>;<string:password>')
 def synchronization(email, password):
@@ -198,7 +205,7 @@ def get_records():
                                            Play.combo == pl[3], Play.mark == pl[4]).first()
             if not play:
                 pl = Play(beatmap_id=pl[0], user_id=us_id, score=pl[1], accuracy=pl[2],
-                      combo=pl[3], mark=pl[4])
+                          combo=pl[3], mark=pl[4])
                 sess.add(pl)
         sess.commit()
     return jsonify({'error': 'Incorrect key'})
@@ -209,8 +216,8 @@ def generate_key():
     key = ''.join([random.choice(chars) for _ in range(30)])
     return key
 
-def main():
 
+def main():
     db_session.global_init("db/rizumu.db")
     app.register_blueprint(blueprint)
     api.add_resource(UserResource, '/api/user/<int:user_id>')
@@ -218,8 +225,6 @@ def main():
     read_maps()
     port = int(os.environ.get("PORT", 8080))
     app.run(host='0.0.0.0', port=port)
-
-
 
 
 if __name__ == '__main__':
