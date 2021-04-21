@@ -14,7 +14,7 @@ from forms.user import RegisterForm, LoginForm
 from requests import get, post, delete
 from data.user_resources import UserResource, UserListResource
 import random
-
+import datetime as dt
 app = Flask(__name__)
 blueprint = flask.Blueprint(
     'news_api',
@@ -205,7 +205,7 @@ def get_records():
                                            Play.combo == pl[3], Play.mark == pl[4]).first()
             if not play:
                 pl = Play(beatmap_id=pl[0], user_id=us_id, score=pl[1], accuracy=pl[2],
-                          combo=pl[3], mark=pl[4])
+                          combo=pl[3], mark=pl[4], date=dt.datetime.now())
                 sess.add(pl)
         sess.commit()
     return jsonify({'error': 'Incorrect key'})
