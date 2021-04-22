@@ -7,7 +7,7 @@ from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
 
 
-class Play(SqlAlchemyBase):
+class Play(SqlAlchemyBase):  # класс игры пользователя
     __tablename__ = 'plays'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,

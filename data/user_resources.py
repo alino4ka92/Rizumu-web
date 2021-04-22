@@ -11,11 +11,13 @@ from flask import make_response, request
 from flask_restful import reqparse, abort, Api, Resource
 from data.user_parser import parser
 
+
 def abort_if_user_not_found(user_id):
     session = db_session.create_session()
     user = session.query(User).get(user_id)
     if not user:
         abort(404, message=f"User {user_id} not found")
+
 
 class UserResource(Resource):
     def get(self, user_id):
@@ -32,6 +34,7 @@ class UserResource(Resource):
         session.commit()
         return jsonify({'success': 'OK'})
 
+
 class UserListResource(Resource):
     def get(self):
         session = db_session.create_session()
@@ -43,9 +46,9 @@ class UserListResource(Resource):
         session = db_session.create_session()
         user = User(
             name=args['name'],
-            email = args['email'],
-            hashed_password = args['hashed_password'],
-            created_date = args['created_date']
+            email=args['email'],
+            hashed_password=args['hashed_password'],
+            created_date=args['created_date']
         )
         session.add(User)
         session.commit()

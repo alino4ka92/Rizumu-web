@@ -15,6 +15,7 @@ from requests import get, post, delete
 from data.user_resources import UserResource, UserListResource
 import random
 import datetime as dt
+
 app = Flask(__name__)
 blueprint = flask.Blueprint(
     'news_api',
@@ -40,19 +41,14 @@ def logout():
     return redirect("/")
 
 
-@app.route('/test_visual')
-def test_visual():
-    return render_template('base.html', title="1")
-
-
 @app.route('/')
-@app.route('/index')
+@app.route('/index')  # /index перенаправляет пользователя на страницу с картами
 def index():
-    return render_template('base.html', title="1")
+    return redirect('/maps')
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def reqister():
+def reqister():  # форма регистрации
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -76,7 +72,7 @@ def reqister():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login():  # форма авторизации
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -90,14 +86,8 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
-@blueprint.route('/api/change_avatar/<int:user_id>')
-def change_avatar(user_id):
-    if current_user['id'] != user_id:
-        return render_template('404.html', message='Пользователь не залогинен')
-
-
 @app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
-def profile(user_id):
+def profile(user_id):  # страница с профилем пользователя
     if request.method == 'GET':
         sess = db_session.create_session()
         ans = sess.query(User).filter(User.id == user_id)
@@ -108,7 +98,7 @@ def profile(user_id):
         plays.sort(key=lambda x: x.date, reverse=True)
         marks_colors = {'S': "#ffeec2", "SS": "#ffeec2", "A": "#c8ffbf", "B": "#a8c5ff", "C": "#efb0ff", "D": "#ffb0b0"}
         return render_template("profile.html", user=user, plays=plays, marks_colors=marks_colors)
-    elif request.method == 'POST':
+    elif request.method == 'POST':  # обновление аватарки
         f = request.files['file']
         f.save(f'static/img/avatars/{user_id}.png')
         sess = db_session.create_session()
@@ -119,7 +109,7 @@ def profile(user_id):
         return redirect(f'/profile/{user_id}')
 
 
-@app.route('/maps/')
+@app.route('/maps/')  # страница со всеми картами
 def maps():
     read_maps()
     map = []
@@ -148,7 +138,7 @@ def get_users():
         return render_template('users.html', users=users, message=message)
 
 
-@app.route('/maps/<int:map_id>')
+@app.route('/maps/<int:map_id>')  # страница с одной картой
 def map(map_id):
     sess = db_session.create_session()
     ans = sess.query(Map).filter(Map.beatmap_id == map_id)
@@ -164,7 +154,7 @@ def map(map_id):
     return render_template("map.html", map=map, plays=plays, marks_colors=marks_colors)
 
 
-@blueprint.route('/api/synchronization/<string:email>;<string:password>')
+@blueprint.route('/api/synchronization/<string:email>;<string:password>')  # получение игрой рекордов пользователя
 def synchronization(email, password):
     sess = db_session.create_session()
     user = sess.query(User).filter(User.email == email).first()
@@ -191,7 +181,7 @@ def synchronization(email, password):
     })
 
 
-@blueprint.route('/api/get_records/', methods=['POST'])
+@blueprint.route('/api/get_records/', methods=['POST'])  # добавление рекорда
 def get_records():
     if not request.json:
         return jsonify({'error': 'Empty request'})
@@ -211,7 +201,7 @@ def get_records():
     return jsonify({'error': 'Incorrect key'})
 
 
-def generate_key():
+def generate_key():  # генерация ключа для авторизации пользователя из игры
     chars = 'abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
     key = ''.join([random.choice(chars) for _ in range(30)])
     return key

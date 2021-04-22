@@ -8,7 +8,9 @@ from sqlalchemy import orm
 from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm.exc import NoResultFound
-class Map(SqlAlchemyBase, UserMixin, SerializerMixin):
+
+
+class Map(SqlAlchemyBase, UserMixin, SerializerMixin):  # класс карты
     __tablename__ = 'maps'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -21,10 +23,11 @@ class Map(SqlAlchemyBase, UserMixin, SerializerMixin):
     music = sqlalchemy.Column(sqlalchemy.String, default="default.mp3")
     added_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now())
     beatmap_id = sqlalchemy.Column(sqlalchemy.String)
-    filename=sqlalchemy.Column(sqlalchemy.String)
+    filename = sqlalchemy.Column(sqlalchemy.String)
     plays = orm.relation("Play", back_populates='beatmap')
 
-def read_maps():
+
+def read_maps():  # функция для загрузки карт из папки static/maps в базу данных
     songs = os.listdir(path="static/maps")
     maps = []
     sess = db_session.create_session()
@@ -89,6 +92,6 @@ def read_maps():
                         path = f"static/img/maps/{background_file}.png"
                         pygame.image.save(background, path)
                 map = Map(name=name, artist=artist, creator=creator, version=version, music=music,
-                          image=path,filename=f"/static/maps/{song}", beatmap_id=beatmap_id)
+                          image=path, filename=f"/static/maps/{song}", beatmap_id=beatmap_id)
                 sess.add(map)
         sess.commit()
